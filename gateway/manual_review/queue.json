@@ -1,0 +1,20 @@
+[
+  {
+    "user": "demo_user",
+    "prompt": "delete all files",
+    "risk_score": 50,
+    "provider": "local"
+  },
+  {
+    "user": "demo_user",
+    "prompt": "delete all files",
+    "risk_score": 50,
+    "provider": "local"
+  },
+  {
+    "user": "demo_user",
+    "prompt": "Please delete all files",
+    "risk_score": 50,
+    "provider": "local"
+  }
+]
