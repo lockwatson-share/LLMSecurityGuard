@@ -18,11 +18,11 @@ Dashboard monitoring
 
 STRIDE-based threat modeling
 
-🚀 Features
+Features
 
 MCP Security – Ensures integrity, replay protection, and auditability using HMAC signatures and nonces.
 
-Authentication & RBAC – Token-based user authentication.
+Authentication & RBAC – Token-based user authentication and role-based access control.
 
 Input Sanitization – Detects dangerous commands and sensitive data.
 
@@ -34,13 +34,13 @@ Manual Review Queue – High-risk prompts require human approval.
 
 Interactive CLI Review Tool – Approve/reject prompts via terminal.
 
-Streamlit Dashboard – Visual view of pending prompts.
+Streamlit Dashboard – Visual view of pending prompts and risk metrics.
 
 Attack Simulations – Prebuilt scripts to test your security layers.
 
-Modular Architecture – Easily extend with new sanitizers or adapters.
+Modular Architecture – Easily extend with new sanitizers, adapters, or logging modules.
 
-👥 Who Is This For?
+Who Is This For?
 
 Developers building LLM-powered apps
 
@@ -52,7 +52,7 @@ Students & researchers learning LLM security
 
 Startups exposing LLM APIs safely
 
-🔐 Model Context Protocol (MCP)
+Model Context Protocol (MCP)
 
 MCP ensures:
 
@@ -60,11 +60,12 @@ Context Integrity – HMAC signatures prevent tampering
 
 Replay Protection – Nonce validation blocks replay attacks
 
-Authorization – Only valid tokens allowed
+Authorization – Only valid tokens are allowed
 
 Auditability – Risk score & metadata tracked
 
-Example MCP Signing
+Example: MCP Signing
+
 from mcp_security.mcp_security import sign_context
 import uuid
 
@@ -73,18 +74,40 @@ user = "demo_user"
 nonce = str(uuid.uuid4())
 
 signature, timestamp = sign_context(prompt, user)
-⚙️ Installation
-1️⃣ Clone Repository
+
+# Send JSON to /llm API:
+# {
+#   "prompt": prompt,
+#   "signature": signature,
+#   "nonce": nonce,
+#   "timestamp": timestamp,
+#   "provider": "local"
+# }
+
+Note: Using OpenAI or Claude adapters requires API keys. For free testing, use the local adapter included in the project.
+
+Installation
+
+1) Clone Repository
+
 git clone https://github.com/<your-username>/LLMSecurityGuard.git
 cd LLMSecurityGuard
-2️⃣ Create Virtual Environment
+
+2) Create Virtual Environment
+
 python -m venv .venv
-source .venv/bin/activate     # Mac/Linux
-.venv\Scripts\activate        # Windows
-3️⃣ Install Dependencies
+
+# Mac/Linux
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+
+3) Install Dependencies
+
 pip install -r requirements.txt
-▶️ Running the Project
-1️⃣ Start API Server
+  Running the Project
+1) Start API Server
 python gateway/api_proxy.py
 
 API runs at:
@@ -97,13 +120,13 @@ Endpoints:
 
 /llm → Secure LLM gateway
 
-2️⃣ Send a Test Prompt
+2) Send a Test Prompt
 
 All test scripts are located in:
 
 attack_simulations/
 
-Run:
+Example:
 
 python -m attack_simulations.test_api
 
@@ -117,29 +140,35 @@ If risk ≥ 50:
   "risk_score": 50,
   "status": "pending_manual_review"
 }
-3️⃣ Interactive Manual Review CLI
+3) Interactive Manual Review CLI (Optional)
 python -m manual_review.cli
 
-You can:
+CLI commands:
 
 [a]pprove
+
 [r]eject
+
 [s]kip
+
 [q]uit
 
 Prompts are stored in:
 
 manual_review/queue.json
-4️⃣ Run Dashboard (Optional)
+4) Run Dashboard (Optional)
 streamlit run dashboard/dashboard_app.py
 
-View high-risk prompts visually at:
+Open in browser (usually):
 
 http://localhost:8501
-5️⃣ Run Attack Simulations
+
+View high-risk prompts visually.
+
+5) Run Attack Simulations
 python -m attack_simulations.test_attacks
 
-Tests:
+Tests include:
 
 Dangerous commands
 
@@ -184,9 +213,7 @@ LLMSecurityGuard/
 └── requirements.txt
 🤝 Contributing
 
-Contributions welcome!
-
-You can:
+Contributions are welcome! You can:
 
 Add new sanitizers
 
@@ -194,9 +221,11 @@ Improve risk scoring
 
 Add LLM adapters
 
-Improve dashboard
+Enhance dashboard or logging
 
 Expand attack simulations
+
+Please follow the code style and submit pull requests with clear descriptions.
 
 📜 License
 
