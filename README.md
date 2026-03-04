@@ -75,14 +75,14 @@ nonce = str(uuid.uuid4())
 
 signature, timestamp = sign_context(prompt, user)
 
-# Send JSON to /llm API:
-# {
-#   "prompt": prompt,
-#   "signature": signature,
-#   "nonce": nonce,
-#   "timestamp": timestamp,
-#   "provider": "local"
-# }
+Send JSON to /llm API:
+ {
+  "prompt": prompt,
+  "signature": signature,
+ "nonce": nonce,
+  "timestamp": timestamp,
+   "provider": "local"
+ }
 
 Note: Using OpenAI or Claude adapters requires API keys. For free testing, use the local adapter included in the project.
 
@@ -97,10 +97,10 @@ cd LLMSecurityGuard
 
 python -m venv .venv
 
-# Mac/Linux
+Mac/Linux
 source .venv/bin/activate
 
-# Windows
+Windows
 .venv\Scripts\activate
 
 3) Install Dependencies
@@ -176,7 +176,7 @@ Sensitive info requests
 
 Normal prompts
 
-🛡️ Threat Model (STRIDE-Based)
+Threat Model (STRIDE-Based)
 
 Protected Against:
 
@@ -202,16 +202,17 @@ Manual review workflow
 
 Input/output sanitization
 
-📁 Project Structure
+Project Structure
 LLMSecurityGuard/
-├── gateway/
-├── sanitizer/
-├── mcp_security/
-├── manual_review/
-├── dashboard/
-├── attack_simulations/
-└── requirements.txt
-🤝 Contributing
+ a)gateway/
+ b)sanitizer/
+ c)mcp_security/
+ d)manual_review/
+ e)dashboard/
+ f)attack_simulations/
+ g)requirements.txt
+
+Contributing
 
 Contributions are welcome! You can:
 
@@ -227,6 +228,6 @@ Expand attack simulations
 
 Please follow the code style and submit pull requests with clear descriptions.
 
-📜 License
+License
 
 MIT License — see LICENSE file for details.
