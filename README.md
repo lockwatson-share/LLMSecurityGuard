@@ -2,6 +2,7 @@ LLMSecurityGuard
 
 LLMSecurityGuard is an open-source secure gateway for LLM APIs, designed to help developers, security engineers, and organizations safely deploy language models.
 
+
 It provides:
 
 Model Context Protocol (MCP) security
@@ -18,7 +19,8 @@ Dashboard monitoring
 
 STRIDE-based threat modeling
 
-Features
+
+Features:
 
 MCP Security – Ensures integrity, replay protection, and auditability using HMAC signatures and nonces.
 
@@ -40,6 +42,7 @@ Attack Simulations – Prebuilt scripts to test your security layers.
 
 Modular Architecture – Easily extend with new sanitizers, adapters, or logging modules.
 
+
 Who Is This For?
 
 Developers building LLM-powered apps
@@ -53,6 +56,7 @@ Students & researchers learning LLM security
 Startups exposing LLM APIs safely
 
 Model Context Protocol (MCP)
+
 
 MCP ensures:
 
@@ -86,6 +90,7 @@ Send JSON to /llm API:
 
 Note: Using OpenAI or Claude adapters requires API keys. For free testing, use the local adapter included in the project.
 
+
 Installation
 
 1) Clone Repository
@@ -106,18 +111,18 @@ Windows
 3) Install Dependencies
 
 pip install -r requirements.txt
-  Running the Project
+  
+
+Running the Project
+
 1) Start API Server
+
 python gateway/api_proxy.py
 
-API runs at:
-
-http://127.0.0.1:5000/
+API runs at: http://127.0.0.1:5000/
 
 Endpoints:
-
 / → Health check
-
 /llm → Secure LLM gateway
 
 2) Send a Test Prompt
@@ -140,6 +145,7 @@ If risk ≥ 50:
   "risk_score": 50,
   "status": "pending_manual_review"
 }
+
 3) Interactive Manual Review CLI (Optional)
 python -m manual_review.cli
 
@@ -156,6 +162,7 @@ CLI commands:
 Prompts are stored in:
 
 manual_review/queue.json
+
 4) Run Dashboard (Optional)
 streamlit run dashboard/dashboard_app.py
 
@@ -166,6 +173,7 @@ http://localhost:8501
 View high-risk prompts visually.
 
 5) Run Attack Simulations
+
 python -m attack_simulations.test_attacks
 
 Tests include:
@@ -175,6 +183,7 @@ Dangerous commands
 Sensitive info requests
 
 Normal prompts
+
 
 Threat Model (STRIDE-Based)
 
@@ -190,6 +199,7 @@ Sensitive Data Leakage
 
 Unauthorized API Access
 
+
 Mitigations:
 
 HMAC signatures
@@ -202,17 +212,24 @@ Manual review workflow
 
 Input/output sanitization
 
+
 Project Structure
 LLMSecurityGuard/
+
  a)gateway/
+
  b)sanitizer/
+
  c)mcp_security/
+
  d)manual_review/
+
  e)dashboard/
+
  f)attack_simulations/
+
  g)requirements.txt
 
-Contributing
 
 Contributions are welcome! You can:
 
