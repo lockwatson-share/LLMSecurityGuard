@@ -1,7 +1,4 @@
-LLMSecurityGuard
-
-LLMSecurityGuard is an open-source secure gateway for LLM APIs, designed to help developers, security engineers, and organizations safely deploy language models.
-
+LLMSecLLMSecurityGuard is an open-source secure gateway for LLM APIs, designed to help developers, security engineers, and organizations safely deploy language models.
 
 It provides:
 
@@ -19,14 +16,13 @@ Dashboard monitoring
 
 STRIDE-based threat modeling
 
-
-Features:
+Features
 
 MCP Security – Ensures integrity, replay protection, and auditability using HMAC signatures and nonces.
 
 Authentication & RBAC – Token-based user authentication and role-based access control.
 
-Input Sanitization – Detects dangerous commands and sensitive data.
+Input Sanitization – Detects dangerous commands, sensitive data, and uses NLP (spaCy) for context-aware analysis.
 
 Output Sanitization – Redacts emails, SSNs, and phone numbers.
 
@@ -42,31 +38,29 @@ Attack Simulations – Prebuilt scripts to test your security layers.
 
 Modular Architecture – Easily extend with new sanitizers, adapters, or logging modules.
 
-
 Who Is This For?
 
-Developers building LLM-powered apps
+Developers building LLM-powered applications
 
 Security engineers auditing AI systems
 
 DevSecOps professionals
 
-Students & researchers learning LLM security
+Students and researchers learning LLM security
 
 Startups exposing LLM APIs safely
 
 Model Context Protocol (MCP)
 
-
 MCP ensures:
 
-Context Integrity – HMAC signatures prevent tampering
+Context Integrity – HMAC signatures prevent tampering.
 
-Replay Protection – Nonce validation blocks replay attacks
+Replay Protection – Nonce validation blocks replay attacks.
 
-Authorization – Only valid tokens are allowed
+Authorization – Only valid tokens are allowed.
 
-Auditability – Risk score & metadata tracked
+Auditability – Risk score and metadata are tracked.
 
 Example: MCP Signing
 
@@ -112,6 +106,10 @@ Windows
 
 pip install -r requirements.txt
   
+4) Install spaCy and English model for NLP input sanitization
+
+pip install spacy
+python -m spacy download en_core_web_sm
 
 Running the Project
 
