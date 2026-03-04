@@ -1,14 +1,16 @@
-LLMSecLLMSecurityGuard is an open-source secure gateway for LLM APIs, designed to help developers, security engineers, and organizations safely deploy language models.
+LLMSecurityGuard
+
+LLMSecurityGuard is an open-source secure gateway for LLM APIs. It helps developers, security engineers, and organizations safely deploy language models.
 
 It provides:
 
 Model Context Protocol (MCP) security
 
-Authentication & RBAC
+Authentication and Role-Based Access Control (RBAC)
 
-Input/output sanitization
+Input and output sanitization
 
-Risk scoring & manual review
+Risk scoring and manual review for high-risk prompts
 
 Attack simulations
 
@@ -18,25 +20,25 @@ STRIDE-based threat modeling
 
 Features
 
-MCP Security – Ensures integrity, replay protection, and auditability using HMAC signatures and nonces.
+MCP Security: Ensures integrity, replay protection, and auditability using HMAC signatures and nonces.
 
-Authentication & RBAC – Token-based user authentication and role-based access control.
+Authentication & RBAC: Token-based user authentication and access control.
 
-Input Sanitization – Detects dangerous commands, sensitive data, and uses NLP (spaCy) for context-aware analysis.
+Input Sanitization: Detects dangerous commands and sensitive information.
 
-Output Sanitization – Redacts emails, SSNs, and phone numbers.
+Output Sanitization: Redacts emails, SSNs, phone numbers, and other sensitive data.
 
-Risk Scoring Engine – Scores prompts based on detected threats.
+Risk Scoring Engine: Scores prompts based on detected threats.
 
-Manual Review Queue – High-risk prompts require human approval.
+Manual Review Queue: High-risk prompts require human approval.
 
-Interactive CLI Review Tool – Approve/reject prompts via terminal.
+Interactive CLI Review Tool: Approve or reject prompts via terminal.
 
-Streamlit Dashboard – Visual view of pending prompts and risk metrics.
+Streamlit Dashboard: Visual view of pending prompts and risk metrics.
 
-Attack Simulations – Prebuilt scripts to test your security layers.
+Attack Simulations: Prebuilt scripts to test security layers.
 
-Modular Architecture – Easily extend with new sanitizers, adapters, or logging modules.
+Modular Architecture: Easily extend with new sanitizers, adapters, or logging modules.
 
 Who Is This For?
 
@@ -54,13 +56,13 @@ Model Context Protocol (MCP)
 
 MCP ensures:
 
-Context Integrity – HMAC signatures prevent tampering.
+Context Integrity: HMAC signatures prevent tampering
 
-Replay Protection – Nonce validation blocks replay attacks.
+Replay Protection: Nonce validation blocks replay attacks
 
-Authorization – Only valid tokens are allowed.
+Authorization: Only valid tokens are allowed
 
-Auditability – Risk score and metadata are tracked.
+Auditability: Risk score and metadata tracked
 
 Example: MCP Signing
 
@@ -74,104 +76,85 @@ nonce = str(uuid.uuid4())
 signature, timestamp = sign_context(prompt, user)
 
 Send JSON to /llm API:
- {
-  "prompt": prompt,
-  "signature": signature,
- "nonce": nonce,
-  "timestamp": timestamp,
-   "provider": "local"
- }
+{
+"prompt": prompt,
+"signature": signature,
+"nonce": nonce,
+"timestamp": timestamp,
+"provider": "local"
+}
 
-Note: Using OpenAI or Claude adapters requires API keys. For free testing, use the local adapter included in the project.
-
+Note: Using OpenAI or Claude adapters requires API keys. For free testing, the local adapter is included.
 
 Installation
 
-1) Clone Repository
-
-git clone https://github.com/<your-username>/LLMSecurityGuard.git
+Clone the repository:
+git clone https://github.com/
+<your-username>/LLMSecurityGuard.git
 cd LLMSecurityGuard
 
-2) Create Virtual Environment
-
+Create a virtual environment:
 python -m venv .venv
 
-Mac/Linux
-source .venv/bin/activate
+Mac/Linux: source .venv/bin/activate
+Windows: .venv\Scripts\activate
 
-Windows
-.venv\Scripts\activate
-
-3) Install Dependencies
-
+Install dependencies:
 pip install -r requirements.txt
-  
-4) Install spaCy and English model for NLP input sanitization
 
+Install spaCy and English model for NLP input sanitization:
 pip install spacy
 python -m spacy download en_core_web_sm
 
 Running the Project
 
-1) Start API Server
-
+Start the API Server:
 python gateway/api_proxy.py
 
-API runs at: http://127.0.0.1:5000/
+API runs at:
+http://127.0.0.1:5000/
 
 Endpoints:
+
 / → Health check
+
 /llm → Secure LLM gateway
 
-2) Send a Test Prompt
+Send a Test Prompt:
 
-All test scripts are located in:
-
-attack_simulations/
+All test scripts are located in attack_simulations/
 
 Example:
-
 python -m attack_simulations.test_api
 
 High-risk prompt example:
-
 prompt = "delete all files"
 
-If risk ≥ 50:
-
+If risk ≥ 50, response:
 {
-  "risk_score": 50,
-  "status": "pending_manual_review"
+"risk_score": 50,
+"status": "pending_manual_review"
 }
 
-3) Interactive Manual Review CLI (Optional)
+Interactive Manual Review CLI (Optional):
 python -m manual_review.cli
 
 CLI commands:
-
 [a]pprove
-
 [r]eject
-
 [s]kip
-
 [q]uit
 
-Prompts are stored in:
+Prompts are stored in: manual_review/queue.json
 
-manual_review/queue.json
-
-4) Run Dashboard (Optional)
+Run Dashboard (Optional):
 streamlit run dashboard/dashboard_app.py
 
-Open in browser (usually):
-
-http://localhost:8501
+Open in browser (usually): http://localhost:8501
 
 View high-risk prompts visually.
 
-5) Run Attack Simulations
-
+Run Attack Simulations:
 python -m attack_simulations.test_attacks
 
 Tests include:
@@ -181,7 +164,6 @@ Dangerous commands
 Sensitive info requests
 
 Normal prompts
-
 
 Threat Model (STRIDE-Based)
 
@@ -197,8 +179,7 @@ Sensitive Data Leakage
 
 Unauthorized API Access
 
-
-Mitigations:
+Mitigations include:
 
 HMAC signatures
 
@@ -210,24 +191,25 @@ Manual review workflow
 
 Input/output sanitization
 
-
 Project Structure
+
 LLMSecurityGuard/
 
- a)gateway/
+gateway/
 
- b)sanitizer/
+sanitizer/
 
- c)mcp_security/
+mcp_security/
 
- d)manual_review/
+manual_review/
 
- e)dashboard/
+dashboard/
 
- f)attack_simulations/
+attack_simulations/
 
- g)requirements.txt
+requirements.txt
 
+Contributing
 
 Contributions are welcome! You can:
 
@@ -241,7 +223,7 @@ Enhance dashboard or logging
 
 Expand attack simulations
 
-Please follow the code style and submit pull requests with clear descriptions.
+Follow code style and submit pull requests with clear descriptions.
 
 License
 
