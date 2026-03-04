@@ -1,42 +1,61 @@
+# sanitizer/input_sanitizer.py
 import re
 import spacy
 
-# Load spaCy small English model for NLP
+# Load spaCy English model
 nlp = spacy.load("en_core_web_sm")
 
-# Keywords & sensitive info
-DANGEROUS_KEYWORDS = ["delete", "drop", "shutdown", "rm -rf", "exfiltrate"]
-SENSITIVE_INFO = ["password", "secret", "ssn", "credit card", "token", "api key"]
+# Keywords and sensitive patterns
+DANGEROUS_KEYWORDS = ["delete", "drop", "shutdown", "rm -rf", "exfiltrate", "format"]
+SENSITIVE_ENTITIES = ["PASSWORD", "SSN", "CREDIT_CARD", "EMAIL", "PHONE"]
+
+# Regex patterns for sensitive info
+EMAIL_PATTERN = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+SSN_PATTERN = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
+PHONE_PATTERN = re.compile(r"\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b")
+CREDIT_CARD_PATTERN = re.compile(r"\b(?:\d[ -]*?){13,16}\b", re.VERBOSE)
+PASSWORD_KEYWORDS = ["password", "secret", "passwd", "token", "apikey"]
 
 def calculate_risk(prompt: str, user: str = "") -> int:
+    """
+    Returns risk score based on dangerous keywords and sensitive info.
+    """
     score = 0
     prompt_lower = prompt.lower()
 
-    # Stage 1: Keyword scoring
+    # Dangerous commands
     for word in DANGEROUS_KEYWORDS:
-        if re.search(rf"\b{re.escape(word)}\b", prompt_lower):
+        if word in prompt_lower:
             score += 50
-    for sensitive in SENSITIVE_INFO:
-        if re.search(rf"\b{re.escape(sensitive)}\b", prompt_lower):
+
+    # Sensitive keywords
+    for word in PASSWORD_KEYWORDS:
+        if word in prompt_lower:
             score += 30
 
-    # Stage 2: Contextual scoring using NLP
-    doc = nlp(prompt)
-    for token in doc:
-        if token.dep_ in ["dobj", "pobj"] and token.head.lemma_ in DANGEROUS_KEYWORDS:
-            score += 10
-        # Detect imperative sentences
-        if token.tag_ == "VB" and token.head.dep_ == "ROOT":
-            score += 5
+    # Regex-based sensitive info
+    if EMAIL_PATTERN.search(prompt):
+        score += 20
+    if SSN_PATTERN.search(prompt):
+        score += 30
+    if PHONE_PATTERN.search(prompt):
+        score += 20
+    if CREDIT_CARD_PATTERN.search(prompt):
+        score += 30
 
-    # Cap risk at 100
+    # Use NLP to detect named entities (e.g., PERSON, ORG, GPE)
+    doc = nlp(prompt)
+    for ent in doc.ents:
+        if ent.label_ in ["PERSON", "ORG", "GPE"]:
+            score += 10
+
     return min(score, 100)
 
 def sanitize_input(prompt: str, user: str = ""):
     """
     Returns sanitized prompt and risk score.
-    Can be extended with more advanced sanitization later.
+    Currently, sanitization is minimal; in future, could redact sensitive info.
     """
     risk_score = calculate_risk(prompt, user)
-    sanitized_prompt = prompt  # In the future, you could remove/obfuscate risky content
+    sanitized_prompt = prompt  # Placeholder; could add redaction here
     return sanitized_prompt, risk_score
