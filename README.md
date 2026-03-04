@@ -2,6 +2,7 @@ LLMSecurityGuard
 
 LLMSecurityGuard is an open-source secure gateway for LLM APIs. It helps developers, security engineers, and organizations safely deploy language models.
 
+
 It provides:
 
 Model Context Protocol (MCP) security
@@ -17,6 +18,7 @@ Attack simulations
 Dashboard monitoring
 
 STRIDE-based threat modeling
+
 
 Features
 
@@ -40,6 +42,7 @@ Attack Simulations: Prebuilt scripts to test security layers.
 
 Modular Architecture: Easily extend with new sanitizers, adapters, or logging modules.
 
+
 Who Is This For?
 
 Developers building LLM-powered applications
@@ -51,6 +54,7 @@ DevSecOps professionals
 Students and researchers learning LLM security
 
 Startups exposing LLM APIs safely
+
 
 Model Context Protocol (MCP)
 
@@ -86,29 +90,31 @@ Send JSON to /llm API:
 
 Note: Using OpenAI or Claude adapters requires API keys. For free testing, the local adapter is included.
 
+
 Installation
 
-Clone the repository:
+1) Clone the repository:
 git clone https://github.com/
 <your-username>/LLMSecurityGuard.git
 cd LLMSecurityGuard
 
-Create a virtual environment:
+2) Create a virtual environment:
 python -m venv .venv
 
 Mac/Linux: source .venv/bin/activate
 Windows: .venv\Scripts\activate
 
-Install dependencies:
+3) Install dependencies:
 pip install -r requirements.txt
 
-Install spaCy and English model for NLP input sanitization:
+4) Install spaCy and English model for NLP input sanitization:
 pip install spacy
 python -m spacy download en_core_web_sm
 
+
 Running the Project
 
-Start the API Server:
+1) Start the API Server:
 python gateway/api_proxy.py
 
 API runs at:
@@ -120,7 +126,7 @@ Endpoints:
 
 /llm → Secure LLM gateway
 
-Send a Test Prompt:
+2) Send a Test Prompt:
 
 All test scripts are located in attack_simulations/
 
@@ -136,7 +142,7 @@ If risk ≥ 50, response:
 "status": "pending_manual_review"
 }
 
-Interactive Manual Review CLI (Optional):
+3) Interactive Manual Review CLI (Optional):
 python -m manual_review.cli
 
 CLI commands:
@@ -147,14 +153,14 @@ CLI commands:
 
 Prompts are stored in: manual_review/queue.json
 
-Run Dashboard (Optional):
+4) Run Dashboard (Optional):
 streamlit run dashboard/dashboard_app.py
 
 Open in browser (usually): http://localhost:8501
 
 View high-risk prompts visually.
 
-Run Attack Simulations:
+5) Run Attack Simulations:
 python -m attack_simulations.test_attacks
 
 Tests include:
@@ -164,6 +170,7 @@ Dangerous commands
 Sensitive info requests
 
 Normal prompts
+
 
 Threat Model (STRIDE-Based)
 
@@ -191,6 +198,7 @@ Manual review workflow
 
 Input/output sanitization
 
+
 Project Structure
 
 LLMSecurityGuard/
@@ -209,6 +217,7 @@ attack_simulations/
 
 requirements.txt
 
+
 Contributing
 
 Contributions are welcome! You can:
@@ -224,6 +233,7 @@ Enhance dashboard or logging
 Expand attack simulations
 
 Follow code style and submit pull requests with clear descriptions.
+
 
 License
 
