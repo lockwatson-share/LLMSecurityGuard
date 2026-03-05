@@ -266,6 +266,7 @@ Tool misuse	                Risk scoring before execution
 Data exfiltration	        Output sanitization
 Unsafe autonomous actions	Human review gate
 Prompt manipulation	        Input sanitizer
+Prompt manipulation	        Input sanitizer
 
 LLMSecurityGuard implements a risk-based Human-in-the-Loop workflow.
 Prompts are scored by the input sanitization and risk engine, and if the score exceeds
