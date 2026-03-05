@@ -1,0 +1,268 @@
+How to Integrate LLMSecurityGuard in an Organization?
+
+Step 1 — Deploy It as a Secure Gateway
+
+LLMSecurityGuard is deployed as a standalone API service (Flask app).
+
+You can run it:
+
+On a VM
+
+In a Docker container
+
+Inside Kubernetes
+
+On-prem or in the cloud (AWS, Azure, GCP)
+
+Once deployed, it becomes the mandatory entry point for all LLM requests.
+
+Instead of:
+
+Application → LLM
+
+You now have:
+
+Application → LLMSecurityGuard → LLM
+
+Step 2 — Connect It to Your LLM Provider
+
+Inside the gateway, configure the LLM adapter:
+
+Cloud LLM (OpenAI, Anthropic, etc.)
+
+Store API keys securely (env variables or secret manager)
+
+On-prem LLM (e.g., local model or internal inference server)
+
+Point to internal LLM endpoint
+
+The organization does not need to modify their LLM — only redirect traffic through the gateway.
+
+Step 3 — Integrate Authentication & RBAC
+
+Replace the demo token system with:
+
+OAuth / JWT
+
+Corporate SSO
+
+Active Directory integration
+
+API key management system
+
+Map users to roles:
+
+Admin
+
+Developer
+
+Analyst
+
+External user
+
+This ensures only authorized users can submit prompts.
+
+Step 4 — Configure Security Policies
+
+Customize:
+
+Risk score thresholds
+
+Manual review triggers
+
+Sensitive keyword lists
+
+PII detection rules
+
+Rate limits per user or service
+
+Security teams define the rules based on organizational policy.
+
+Step 5 — Connect Logging to SIEM
+
+Export logs to:
+
+Splunk
+
+Datadog
+
+ELK stack
+
+SIEM tools
+
+This enables:
+
+Audit trails
+
+Compliance reporting
+
+Incident response
+
+Step 6 — Enable Manual Review Workflow
+
+High-risk prompts go to:
+
+Internal security team
+
+Compliance team
+
+AI governance team
+
+They can approve or reject flagged prompts.
+
+This is especially useful in:
+
+Healthcare
+
+Finance
+
+Government
+
+Legal environments
+
+What This Achieves for the Organization
+
+Instead of trusting raw LLM calls, the organization now gets:
+
+• Prompt injection protection
+• Replay attack prevention
+• Sensitive data filtering
+• Audit logging
+• Human-in-the-loop oversight
+• Rate limiting & abuse protection
+• Enterprise-grade AI governance
+
+How LLMSecurityGuard Enables Human-in-the-Loop ?
+
+LLMSecurityGuard implements a risk-based human approval workflow.
+
+Step 1 — Prompt Risk Scoring
+
+Every prompt sent to the /llm endpoint is evaluated by the input sanitizer and risk scoring engine.
+
+The engine checks for:
+
+Dangerous commands (delete, drop, rm -rf, shutdown)
+
+Sensitive data requests (password, SSN, credit card)
+
+Suspicious prompt patterns
+
+Each prompt receives a risk score (0–100).
+
+Step 2 — High-Risk Prompts Are Flagged
+
+If the risk score exceeds the threshold (for example ≥ 50):
+
+The prompt is not sent to the LLM.
+
+Instead it is added to a manual review queue.
+
+Example response:
+
+{
+  "risk_score": 70,
+  "status": "pending_manual_review"
+}
+Step 3 — Prompt Added to Review Queue
+
+The system stores the flagged prompt in:
+
+manual_review/queue.json
+
+Each entry contains:
+
+user
+
+prompt
+
+risk_score
+
+provider
+
+timestamp
+
+Step 4 — Security Team Reviews It
+
+A human reviewer can inspect the prompt using:
+
+CLI review tool
+
+Run:
+
+python -m manual_review.cli
+
+The reviewer can:
+
+approve
+
+reject
+
+skip
+
+Example:
+
+[a]pprove
+[r]eject
+[s]kip
+[q]uit
+Step 5 — Optional Dashboard Monitoring
+
+The Streamlit dashboard displays:
+
+flagged prompts
+
+risk scores
+
+pending reviews
+
+Security teams can visually inspect activity.
+
+Result
+
+The system creates a Human-in-the-Loop governance layer, which prevents unsafe prompts from automatically reaching the LLM.
+
+This is particularly useful in:
+
+finance
+
+healthcare
+
+enterprise AI deployments
+
+regulated environments
+
+3) Mapping to OWASP LLM Top 10
+
+
+OWASP LLM Risk	                       Mitigation in LLMSecurityGuard
+Prompt Injection	                   Input sanitizer detects malicious instructions
+Sensitive Information Disclosure	   Output sanitizer redacts PII
+Insecure Output Handling	           Output filtering before returning response
+Model Denial of Service	               Rate limiting
+Improper Access Control	               Token authentication
+Supply Chain Issues	                   MCP signature validation
+Data Leakage	                       Sanitization and risk scoring
+Model Abuse	                           Rate limits + monitoring
+
+3. Mapping to MITRE ATLAS
+
+MITRE ATLAS focuses on adversarial ML attacks.
+
+ATLAS Attack	     Mitigation
+Prompt Injection	 Input sanitization
+Data Exfiltration	 Output filtering
+Replay Attacks	     Nonce validation
+Context Tampering	 HMAC signature verification
+Abuse / Flooding	 Rate limiting
+Unauthorized Access	 Authentication
+
+4. Mapping to OWASP Agentic AI Security
+
+For AI agents or autonomous workflows:
+
+Agent Risk	                Mitigation
+Tool misuse	                Risk scoring before execution
+Data exfiltration	        Output sanitization
+Unsafe autonomous actions	Human review gate
+Prompt manipulation	        Input sanitizer
