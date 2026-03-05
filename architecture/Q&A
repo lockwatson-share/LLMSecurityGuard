@@ -266,3 +266,15 @@ Tool misuse	                Risk scoring before execution
 Data exfiltration	        Output sanitization
 Unsafe autonomous actions	Human review gate
 Prompt manipulation	        Input sanitizer
+Prompt manipulation	        Input sanitizer
+
+LLMSecurityGuard implements a risk-based Human-in-the-Loop workflow.
+Prompts are scored by the input sanitization and risk engine, and if the score exceeds
+a threshold they are blocked from reaching the LLM and placed into a manual review queue.
+Security teams can review these prompts via a CLI tool or dashboard and approve or reject
+them before execution.
+
+From a security framework perspective, the project aligns with OWASP LLM Top 10 controls
+(prompt injection protection, output filtering, access control, and DoS protection)
+and maps to MITRE ATLAS mitigations such as replay attack prevention (nonce validation)
+, context integrity via HMAC signatures, and abuse prevention through rate limiting and monitoring.
