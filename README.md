@@ -234,7 +234,25 @@ Expand attack simulations
 
 Follow code style and submit pull requests with clear descriptions.
 
+Future Work: MCP and Agent Security
 
+LLMSecurityGuard currently operates as a security gateway that intercepts requests at the LLM API boundary before they reach the model. While it does not yet provide native monitoring of MCP servers or agent tool calls, the interception architecture can be extended to support this model.
+
+Future versions may introduce an MCP-aware proxy capable of parsing the JSON-RPC messages used by the Model Context Protocol. This would allow LLMSecurityGuard to inspect and enforce security policies on tool invocation requests between agents and MCP servers.
+
+Such capabilities could enable:
+
+Tool invocation validation
+
+Sensitive data filtering
+
+Rate limiting for tool usage
+
+Audit logging of agent–tool interactions
+
+Policy enforcement before requests reach MCP servers
+
+This extension would allow LLMSecurityGuard to act as a security control layer for agentic AI systems.
 License
 
 MIT License — see LICENSE file for details.
